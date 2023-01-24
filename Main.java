@@ -3,8 +3,21 @@ import java.util.TreeMap;
 
 
 public class Main {
+
+
     public static void main(String[] args) {
+        String s1;
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Введите пример с целыми числами от 1 до 10");
+        s1 = scanner.nextLine();
+
+        System.out.println(calc(s1));
+    }
+
+
+    public static String calc(String input){
+
         trans trans = new trans();
 
         String[] rimChis = {"I","II","III","IV","V","VI","VII","VIII","XI","X"};
@@ -12,18 +25,15 @@ public class Main {
 
         String[] simvols = {"+","-","*","/"};
         String[] regexActions = {"\\+", "-","\\*","/"};
-        String s1;
+
         boolean t=false;
         int res=0;
         String ress=null;
         String lol=null;
         int arrindex=0;
 
-        System.out.println("Введите пример с целыми числами от 1 до 10");
-        s1 = scanner.nextLine();
-
         int countNulls=0, countOnes = 0, countym=0,countdel=0;
-        for (char element : s1.toCharArray()){
+        for (char element : input.toCharArray()){
             if (element == '+') countNulls++;
             if (element == '-') countOnes++;
             if (element == '*') countym++;
@@ -32,43 +42,43 @@ public class Main {
 
         if (countNulls>1 || countOnes>1 || countym>1|| countdel>1){ //проверка на повторение символов математической операции
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         } else if (countNulls>0 && countOnes>0){
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         } else if (countNulls>0 && countym>0){
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         }else if (countNulls>0 && countdel>0){
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         }else if (countOnes>0 && countym>0){
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         }else if (countOnes>0 && countdel>0){
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         }else if (countym>0 && countdel>0){
             System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            return;
+            System. exit(0);
         }
 
 
         for(int i=0; i<simvols.length; i++) {
-            if(s1.contains(simvols[i])){
-            lol=simvols[i];
-            arrindex=i;
+            if(input.contains(simvols[i])){
+                lol=simvols[i];
+                arrindex=i;
             }
         }
 
         try {
             if (lol == null) { //проверка на математическую операцию
                 System.out.println("Строка не является математической операцией");
-                return;
-           }
+                System. exit(0);
+            }
         } catch (ArrayIndexOutOfBoundsException ex){
             System.out.println("Строка не является математической операцией");
-            return;
+            System. exit(0);
         }
 
         String a1=null;
@@ -78,20 +88,20 @@ public class Main {
         String a =null;
         String b =null;
 
-        String[] d = s1.split(regexActions[arrindex]);
+        String[] d = input.split(regexActions[arrindex]);
 
 
         try {
 
             a = d[0];
-             a1 = a.replaceAll(" ", ""); //удвление пробелов
+            a1 = a.replaceAll(" ", ""); //удвление пробелов
             a2 = a1;
             b = d[1];
             b1 = b.replaceAll(" ", "");
 
         }catch (Exception ex){
             System.out.println("Строка не является математической операцией"); //в любой непонятной ситуации обработка ошибки
-            return;
+            System. exit(0);
         }
 
         int al=0;
@@ -121,7 +131,7 @@ public class Main {
                 }
             }
             if (!qw && !qa){
-                   System.out.println("Строка не является математической операцией"); return;
+                System.out.println("Строка не является математической операцией");  System. exit(0);
             }
 
             al = Integer.parseInt(a1); //перевод в int для подсчёта
@@ -129,34 +139,32 @@ public class Main {
         }
         catch (Exception ex){
             System.out.println("Ошибка используются одновременно разные системы счисления");
-            return;
+            System. exit(0);
         }
 
 
         if (al>10 || bl>10){
             System.out.println("я так не могу, введите числа от единицы до десяти");
-            return;
+            System. exit(0);
+        }
+        
+        try{ //подсчёт ответа с учётом выбранной операции
+            if(lol == "+"){
+                res = al+bl;
+            }else if(lol == "-"){
+                res = al-bl;
+            }else if(lol == "*"){
+                res = al*bl;
+            }else{
+                res = al/bl;
+            }
+        } catch (Exception ex){
+            System.out.println(" ");
         }
 
 
 
-       try{ //подсчёт ответа с учётом выбранной операции
-           if(lol == "+"){
-               res = al+bl;
-           }else if(lol == "-"){
-               res = al-bl;
-           }else if(lol == "*"){
-               res = al*bl;
-           }else{
-               res = al/bl;
-           }
-       } catch (Exception ex){
-           System.out.println(" ");
-       }
-
-
-
-
+        String s=null;
         try {
             for (int i = 0; i < rimChis.length; i++) {
                 if (rimChis[i].equals(a2)) {
@@ -166,14 +174,19 @@ public class Main {
                 }
             }
             if (t==true) {  //вывод ответа в римских или арабских
-                System.out.println(ress);
+                //System.out.println(ress);
+                 s = ress;
             } else {
-                System.out.println(res);
+                 s = Integer.toString(res);
+               // System.out.println(res);
             }
         }
         catch (Exception ex){
             System.out.println("Отрицательных чисел в римских нет");
+            System. exit(0);
         }
+
+        return s;
     }
 }
 
@@ -227,7 +240,3 @@ public class Main {
         }
 
     }
-
-
-
-
